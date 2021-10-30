@@ -1,0 +1,43 @@
+[
+    {
+        "name": "app-container",
+        "secrets": [],
+        "image": "Your App ECR URL Here",
+        "cpu": 512,
+        "memory": 512,
+        "portMappings": [
+            {
+                "containerPort": ${app_port},
+                "protocol": "tcp",
+                "hostPort": 0
+            }
+        ],
+        "essential": true
+    },
+    {
+        "name": "nginx-container",
+        "image": "Your Nginx ECR URL Here",
+        "memory": 256,
+        "cpu": 256,
+        "essential": true,
+        "portMappings": [
+            {
+                "containerPort": ${web_port},
+                "protocol": "tcp",
+                "hostPort": 0
+            }
+        ],
+        "links": [
+            "app-container:app-container"
+        ],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "secretOptions": null,
+            "options": {
+                "awslogs-group": "/ecs/nginx-log",
+                "awslogs-region": "${region}",
+                "awslogs-stream-prefix": "ecs"
+            }
+        }
+    }
+]
