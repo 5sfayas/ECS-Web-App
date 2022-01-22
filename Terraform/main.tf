@@ -18,8 +18,8 @@ data "template_file" "template" {
     template = file("./templates/container-definition.json")
     vars = {
         region            = var.AWS_REGION
-        app_port          = var.container_port
-        web_port          = var.nginx_port
+        app_port          = var.app_port
+        web_port          = var.web_port
     }
 }
 
@@ -60,7 +60,7 @@ data "aws_availability_zones" "available" {
 # Create Subnet
 resource "aws_subnet" "fargate_public" {
     count = 1
-    cidr_block              = "10.0.0.1/24"
+    cidr_block              = "10.0.0.0/24"
     availability_zone       = data.aws_availability_zones.available.names[count.index]
     vpc_id                  = data.aws_vpc.vpc.id
     map_public_ip_on_launch = true
