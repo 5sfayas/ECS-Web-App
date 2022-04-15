@@ -1,0 +1,51 @@
+{
+    "containerDefinitions": [
+        {
+            "name": "app-container",
+            "image": "<ecrURi>:eb9ed1c", // app image with commit hash
+            "cpu": 512,
+            "memory": 512,
+            "portMappings": [
+                {
+                    "containerPort": 3000,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "secrets": []
+        },
+        {
+            "name": "nginx-container",
+            "image": "<ecrUri>:eb9ed1c", // nginx image with commit hash
+            "cpu": 256,
+            "memory": 256,
+            "links": [
+                "app-container:app-container"
+            ],
+            "portMappings": [
+                {
+                    "containerPort": 80,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": []
+        }
+    ],
+    "family": "Sidecar",
+    "executionRoleArn": 
+"arn:aws:iam::<accountid>:role/ecsTaskExecutionRole",
+    "networkMode": "bridge",
+    "volumes": [],
+    "placementConstraints": [],
+    "requiresCompatibilities": [
+        "Fagrate"
+    ]
+}
